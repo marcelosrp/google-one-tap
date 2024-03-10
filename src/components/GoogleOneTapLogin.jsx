@@ -4,7 +4,6 @@ import { useGoogleOneTap } from '../providers/GoogleOneTapProvider'
 
 export default function GoogleOneTapLogin() {
   const { userData } = useGoogleOneTap()
-  console.log('🚀 ~ GoogleOneTapLogin ~ userData:', userData)
 
   if (!userData) return null
 

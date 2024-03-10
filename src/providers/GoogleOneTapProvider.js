@@ -1,6 +1,9 @@
 'use client'
 import { createContext, useContext, useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
+import Cookies from 'js-cookie'
+
+const COOKIE_EXPIRATION_DAYS = 90
 
 export const GoogleOneTapContext = createContext({ userData: null })
 
@@ -12,7 +15,6 @@ const GoogleOneTapProvider = ({ children }) => {
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
-    // will show popup after two secs
     const timeout = setTimeout(() => oneTap(), 2000)
     return () => {
       clearTimeout(timeout)
@@ -21,9 +23,25 @@ const GoogleOneTapProvider = ({ children }) => {
   }, [])
 
   // This function will call exm api
-  const googleOneTapLogin = data => jwtDecode(data.token)
+  const googleOneTapLogin = data => {
+    const { token } = data
+
+    Cookies.set('one_tap', token, {
+      expires: COOKIE_EXPIRATION_DAYS,
+      path: '',
+    })
+
+    return jwtDecode(token)
+  }
 
   const oneTap = () => {
+    const isOneTapLogged = Cookies.get('one_tap')
+
+    if (isOneTapLogged) {
+      setUserData(jwtDecode(isOneTapLogged))
+      return
+    }
+
     const { google } = window
 
     if (google) {
