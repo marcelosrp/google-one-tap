@@ -20,15 +20,8 @@ const GoogleOneTapProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const googleOneTapLogin = data => {
-    console.log(
-      '🚀 ~ file: GoogleOneTapLogin.js:4 ~ googleOneTapLogin ~ data:',
-      data,
-    )
-
-    const decoded = jwtDecode(data.token)
-    console.log('🚀 ~ googleOneTapLogin ~ decoded:', decoded)
-  }
+  // This function will call exm api
+  const googleOneTapLogin = data => jwtDecode(data.token)
 
   const oneTap = () => {
     const { google } = window
@@ -74,16 +67,13 @@ const GoogleOneTapProvider = ({ children }) => {
 
   const call = async token => {
     try {
-      const res = await googleOneTapLogin({
+      const response = await googleOneTapLogin({
         token,
       })
-      console.log('🚀 ~ call ~ res:', res)
-      // add your logic to route to
-      // redux dispatch
-      //router.push('/user')
+
+      setUserData(response)
     } catch (error) {
       console.error('🚀 ~ call ~ error:', error)
-      //router.push('/login')
     }
   }
 
