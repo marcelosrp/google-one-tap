@@ -1,11 +1,13 @@
-'use client'
-import Image from 'next/image'
-import { useGoogleOneTap } from '../providers/GoogleOneTapProvider'
+'use client';
+import Image from 'next/image';
+import { useGoogleOneTap } from '../providers/GoogleOneTapProvider';
 
+// Esse componente irá exibir o nome e a foto do usuário que fez login
+// usando o provider do Google One Tap
 export default function GoogleOneTapLogin() {
-  const { userData } = useGoogleOneTap()
+  const { userData } = useGoogleOneTap();
 
-  if (!userData) return null
+  if (!userData) return null;
 
   return (
     <section className="flex gap-2 items-center">
@@ -19,5 +21,5 @@ export default function GoogleOneTapLogin() {
       </div>
       <h1>Bem vindo: {userData.name}</h1>
     </section>
-  )
+  );
 }
